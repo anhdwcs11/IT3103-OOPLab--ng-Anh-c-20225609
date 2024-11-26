@@ -21,5 +21,8 @@ public static void main(String[] args) {
 	s=sb.toString();
 	System.out.println(System.currentTimeMillis()-start);
 }
+<<<<<<< HEAD
 }
-
+=======
+}
+>>>>>>> dc228a8771c615f4725a54702676cfdb619533b3
