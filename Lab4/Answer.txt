@@ -1,0 +1,56 @@
+Question: Instead of using Comparator, we can use the Comparable interface and override the compareTo() method. Let’s assume we follow the Comparable approach.
+
+Which class should implement the Comparable interface?
+
+Subclasses of Media, such as Book, DigitalVideoDisc, and CompactDisc, should implement the Comparable interface. This allows these objects to be compared based on specific ordering rules.
+How should the compareTo() method be implemented in these classes to reflect the desired ordering?
+
+The compareTo() method should compare objects based on the desired criteria. For example:
+For ordering by "title" first, then by "cost":
+java
+Sao chép mã
+@Override
+public int compareTo(Media other) {
+    int titleComparison = this.getTitle().compareTo(other.getTitle());
+    if (titleComparison != 0) {
+        return titleComparison;
+    }
+    return Float.compare(this.getCost(), other.getCost());
+}
+For ordering by "cost" first, then by "title":
+java
+Sao chép mã
+@Override
+public int compareTo(Media other) {
+    int costComparison = Float.compare(this.getCost(), other.getCost());
+    if (costComparison != 0) {
+        return costComparison;
+    }
+    return this.getTitle().compareTo(other.getTitle());
+}
+Can we have two ordering rules for the items (by "title" then "cost" and by "cost" then "title") using the Comparable approach?
+
+No.
+The Comparable interface supports only one sorting rule defined in the compareTo() method. To use multiple sorting rules, you need to use the Comparator interface, which allows for defining multiple comparison strategies.
+If DVDs have a different ordering rule from other media types (by "title", then by decreasing "length", then by "cost"), how would you modify the code to support this?
+
+To apply a specific sorting rule for DVDs, override the compareTo() method in the DigitalVideoDisc class as follows:
+java
+Sao chép mã
+@Override
+public int compareTo(Media other) {
+    if (other instanceof DigitalVideoDisc) {
+        DigitalVideoDisc dvd = (DigitalVideoDisc) other;
+        int titleComparison = this.getTitle().compareTo(dvd.getTitle());
+        if (titleComparison != 0) {
+            return titleComparison;
+        }
+        int lengthComparison = Integer.compare(dvd.getLength(), this.getLength()); // Decreasing order
+        if (lengthComparison != 0) {
+            return lengthComparison;
+        }
+        return Float.compare(this.getCost(), dvd.getCost());
+    }
+    return super.compareTo(other);
+}
+This ensures that DigitalVideoDisc objects follow their custom sorting rule, while other classes continue to use the default rule.
